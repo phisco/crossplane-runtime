@@ -360,12 +360,20 @@ func (p *Paved) setValue(s Segments, value any) error {
 			}
 
 			if final {
-				array[current.Index] = v
+				index := int(current.Index)
+				if l := len(array) - 1; index > l {
+					index = l
+				}
+				array[index] = v
 				return nil
 			}
 
 			prepareElement(array, current, s[i+1])
-			in = array[current.Index]
+			index := int(current.Index)
+			if l := len(array) - 1; index > l {
+				index = l
+			}
+			in = array[index]
 
 		case SegmentField:
 			object, ok := in.(map[string]any)
@@ -387,14 +395,18 @@ func (p *Paved) setValue(s Segments, value any) error {
 }
 
 func prepareElement(array []any, current, next Segment) {
+	index := int(current.Index)
+	if l := len(array) - 1; index > l {
+		index = l
+	}
 	// If this segment is not the final one and doesn't exist we need to
 	// create it for our next segment.
-	if array[current.Index] == nil {
+	if array[index] == nil {
 		switch next.Type {
 		case SegmentIndex:
-			array[current.Index] = make([]any, next.Index+1)
+			array[index] = make([]any, 1)
 		case SegmentField:
-			array[current.Index] = make(map[string]any)
+			array[index] = make(map[string]any)
 		}
 		return
 	}
@@ -405,7 +417,7 @@ func prepareElement(array []any, current, next Segment) {
 		return
 	}
 
-	na, ok := array[current.Index].([]any)
+	na, ok := array[index].([]any)
 	if !ok {
 		return
 	}
@@ -414,16 +426,17 @@ func prepareElement(array []any, current, next Segment) {
 		return
 	}
 
-	array[current.Index] = append(na, make([]any, int(next.Index)-len(na)+1)...)
+	array[index] = append(na, []any{})
 }
 
 func prepareField(object map[string]any, current, next Segment) {
+
 	// If this segment is not the final one and doesn't exist we need to
 	// create it for our next segment.
 	if _, ok := object[current.Field]; !ok {
 		switch next.Type {
 		case SegmentIndex:
-			object[current.Field] = make([]any, next.Index+1)
+			object[current.Field] = make([]any, 1)
 		case SegmentField:
 			object[current.Field] = make(map[string]any)
 		}
@@ -445,7 +458,7 @@ func prepareField(object map[string]any, current, next Segment) {
 		return
 	}
 
-	object[current.Field] = append(na, make([]any, int(next.Index)-len(na)+1)...)
+	object[current.Field] = append(na, make([]any, 1)...)
 }
 
 // SetValue at the supplied field path.

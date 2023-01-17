@@ -694,6 +694,28 @@ func TestSetValue(t *testing.T) {
 				},
 			},
 		},
+		"NewContainerHighIndex": {
+			reason: "Growing an array object field should work even for high indexes",
+			data:   []byte(`{"spec":{"containers":[{"name":"cool"}]}}`),
+			args: args{
+				path:  "spec.containers[10].name",
+				value: "cooler",
+			},
+			want: want{
+				object: map[string]any{
+					"spec": map[string]any{
+						"containers": []any{
+							map[string]any{
+								"name": "cool",
+							},
+							map[string]any{
+								"name": "cooler",
+							},
+						},
+					},
+				},
+			},
+		},
 		"NestedArray": {
 			reason: "Setting a value in a nested array should work",
 			data:   []byte(`{}`),
@@ -733,7 +755,7 @@ func TestSetValue(t *testing.T) {
 			},
 			want: want{
 				object: map[string]any{
-					"data": []any{"a", nil, "c"},
+					"data": []any{"a", "c"},
 				},
 			},
 		},
