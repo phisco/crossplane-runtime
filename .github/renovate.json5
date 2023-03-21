@@ -3,6 +3,7 @@
   "extends": [
     "config:base"
   ],
+  "forkProcessing": "enabled",
 // We only want renovate to rebase PRs when they have conflicts,
 // default "auto" mode is not required.
   "rebaseWhen": "conflicted",
