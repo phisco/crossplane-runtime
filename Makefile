@@ -35,7 +35,7 @@ GO_REQUIRED_VERSION = 1.19
 GO_LDFLAGS += -X $(GO_PROJECT)/pkg/version.Version=$(VERSION)
 GO_SUBDIRS += pkg apis
 GO111MODULE = on
-GOLANGCILINT_VERSION = 1.49.0
+GOLANGCILINT_VERSION = 1.52.1
 -include build/makelib/golang.mk
 
 # ====================================================================================
