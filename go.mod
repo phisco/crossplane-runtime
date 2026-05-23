@@ -1,6 +1,6 @@
 module github.com/crossplane/crossplane-runtime
 
-go 1.20
+go 1.25.0
 
 require (
 	dario.cat/mergo v1.0.0
@@ -114,7 +114,7 @@ require (
 	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/oauth2 v0.15.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/sys v0.44.0 // indirect
 	golang.org/x/term v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
